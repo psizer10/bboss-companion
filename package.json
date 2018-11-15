@@ -48,7 +48,10 @@
   },
   "dependencies": {
     "electron-compile": "^6.4.3",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "cryptiles": ">=4.1.2",
+    "mime": ">=1.4.1",
+    "hoek": ">=4.2.1"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.24.1",
