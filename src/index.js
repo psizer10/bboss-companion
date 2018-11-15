@@ -70,11 +70,12 @@ app.on('activate', () => {
 // code. You can also put them in separate files and import them here.
 
 function sock(){
-	let socket = new io.Socket('https://bboss.biz:3000')
+	let socket = new io.connect('https://bboss.biz:3000')
 	myConsole.log(socket);
-	socket.on('testing-the-socker-muthafucka',
+	
+	socket.on('bboss:refreshDespatchToday-2',
 		function(t){
-			myConsole.log(t);
+			myConsole.log('refresh despatch today!!!!')
 		}
 	);
 }
