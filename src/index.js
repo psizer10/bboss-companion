@@ -1,9 +1,12 @@
 import { app, BrowserWindow } from 'electron';
+import * as io from 'socket.io-client';
+
 var nodeConsole = require('console');
 var myConsole = new nodeConsole.Console(process.stdout, process.stderr);
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
-  app.quit();
+	app.quit();
 }
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -11,32 +14,33 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 let mainWindow;
 
 const createWindow = () => {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-  });
+	// Create the browser window.
+	mainWindow = new BrowserWindow({
+		width: 800,
+		height: 600,
+	});
 
 
 
-  // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/index.html`);
+	// and load the index.html of the app.
+	mainWindow.loadURL(`file://${__dirname}/index.html`);
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+	// Open the DevTools.
+	mainWindow.webContents.openDevTools();
 
-  // Emitted when the window is closed.
-  mainWindow.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null;
-  });
-  let contents = mainWindow.webContents
+	// Emitted when the window is closed.
+	mainWindow.on('closed', () => {
+		// Dereference the window object, usually you would store windows
+		// in an array if your app supports multi windows, this is the time
+		// when you should delete the corresponding element.
+		mainWindow = null;
+	});
+	let contents = mainWindow.webContents
 
-  contents.print({silent: true, printBackground: false, deviceName: 'EPSON_Stylus_Photo_1400'})
+	//contents.print({silent: true, printBackground: false, deviceName: 'EPSON_Stylus_Photo_1400'})
 
-  myConsole.log(contents.getPrinters());
+	//myConsole.log(contents.getPrinters());
+	sock();
 };
 
 
@@ -47,20 +51,33 @@ app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+	// On OS X it is common for applications and their menu bar
+	// to stay active until the user quits explicitly with Cmd + Q
+	if (process.platform !== 'darwin') {
+		app.quit();
+	}
 });
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow();
-  }
+	// On OS X it's common to re-create a window in the app when the
+	// dock icon is clicked and there are no other windows open.
+	if (mainWindow === null) {
+		createWindow();
+	}
 });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+function sock(){
+	let socket = new io.Socket('https://bboss.biz:3000')
+	myConsole.log(socket);
+	socket.on('testing-the-socker-muthafucka',
+		function(t){
+			myConsole.log(t);
+		}
+	);
+}
+
+
+
