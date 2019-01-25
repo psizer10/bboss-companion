@@ -1,12 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html ng-app='companionApp'>
 	<head>
 		<meta charset="utf-8">
 		<title>BBOSS Companion</title>
-		<link rel='stylesheet' href='assets/css/companion.css'></link>
+		
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular.min.js"></script>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
+
+
+		<link rel='stylesheet' href='assets/css/companion.css'></link>
+		<script src='assets/js/companion.js' type='text/javascript'></script>
+		
 	</head>
 	<body>
-		BBOSS Companion
+		<div class='container' ng-controller='CompanionController as companion'>
+			<div class='header'>
+				<span>BBOSS Companion</span>
+				<img src='assets/images/bbossLogo.png'/>
+			</div>
+			<div class='connection' ng-switch='companion.connection.connected'>
+				<div>
+					<div class='status bGreen' ng-switch-when='true'>Connected&nbsp;&nbsp;<i class="fas fa-check"></i></div>
+				</div>
+				<div>
+					<div class='status bRed' ng-switch-when='false'>Not Connected&nbsp;&nbsp;<i class="fas fa-times"></i></div>
+				</div>
+				<div>
+					<div class='status enterToken bBlue bBtn' ng-switch-when='undefined'>Enter Token&nbsp;&nbsp;<i class="fas fa-arrow-circle-right"></i></div>
+					<input placeholder='ABCD-1234-EFGH-5678' maxlength='19' ng-model='companion.token' ng-change='companion.tokenChanged()'/>
+				</div>
+			</div>
+			<div class='content'>{{companion.test}}</div>
+		</div>
+		<!-- <div class='tokenEntry'> -->
+			<!-- <img src='assets/images/bbossLogo.png'/> -->
+			<!-- <span>BBOSS Companion</span>
+			<input placeholder='1234-1234-1234-1234'/> -->
+		<!-- </div> -->
+		<!-- <div id='logo' class=''>
+			<img src='assets/images/bbossLogo.png'/>
+		</div> -->
+		<!-- <div style='width: 40px; height: 40px; background-color: red; margin-top: 200px;' onclick='test()'>test</div> -->
 	</body>
 </html>

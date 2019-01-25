@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron';
-import * as io from 'socket.io-client';
+const path = require('path')
+const glob = require('glob')
 
 var nodeConsole = require('console');
 var myConsole = new nodeConsole.Console(process.stdout, process.stderr);
@@ -12,12 +13,17 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let settingsWindow;
 
 const createWindow = () => {
+
+	loadJS();
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
+		name : 'BBOSS Companion',
 		width: 800,
 		height: 600,
+		//frame : false
 	});
 
 
@@ -35,12 +41,13 @@ const createWindow = () => {
 		// when you should delete the corresponding element.
 		mainWindow = null;
 	});
-	let contents = mainWindow.webContents
 
+
+	// let contents = mainWindow.webContents
 	//contents.print({silent: true, printBackground: false, deviceName: 'EPSON_Stylus_Photo_1400'})
-
 	//myConsole.log(contents.getPrinters());
-	sock();
+//	sock();
+//	openSettingsWindow();
 };
 
 
@@ -69,15 +76,19 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-function sock(){
-	let socket = new io.connect('https://bboss.biz:3000')
-	myConsole.log(socket);
-	
-	socket.on('bboss:refreshDespatchToday-2',
-		function(t){
-			myConsole.log('refresh despatch today!!!!')
-		}
-	);
+function loadJS () {
+  const files = glob.sync(path.join(__dirname, 'assets/js/*.js'))
+  files.forEach((file) => { require(file) })
+}
+function openSettingsWindow(){
+	settingsWindow = new BrowserWindow({
+		name : 'BBOSS Companion Settings',
+		width: 200,
+		height: 200,
+		//frame : false
+	});
+
+	//settingsWindow.loadURL(`https://www.bboss.biz`);
 }
 
 
