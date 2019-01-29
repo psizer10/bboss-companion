@@ -1,0 +1,10 @@
+<div class='selectPrinterPopUp'>
+    <div class='selectPrinterPopUp-header'>Select Printer&nbsp;&nbsp;<i class='fas fa-print'></i></div>
+    <div class='dialogue'>
+        Select the printer you would like to use for <br><strong>Delivery Notes</strong>
+    </div>
+    <select ng-model='companion.selectPrinter'>
+        <option ng-repeat='(key, printer) in companion.printers' value='{{printer.name}}'>{{printer.description}}</option>
+    </select>
+    <div class='bBtn bGreen confirmPrinterBtn' ng-click='companion.confirmPrinterSelection()'>Confirm Printer</div>
+</div>
