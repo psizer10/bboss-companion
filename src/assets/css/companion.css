@@ -5,6 +5,9 @@
 	font-family: 'Open Sans';
 	font-weight: 300;
 }
+strong{
+	font-weight: bold;
+}
 
 input:focus{
 	outline: none;
@@ -71,6 +74,7 @@ body{
 
 .bBtn{
 	user-select: none;
+	cursor : pointer;
 }
 .bBtn:hover{
 	-webkit-filter: brightness(110%);
@@ -130,7 +134,7 @@ body{
 	font-weight: bold;
 	text-align: center;
 	color: white;
-	font-size: 14px;
+	font-size: 13px;
 	height: 28px;
 	line-height: 28px;
 }
@@ -142,14 +146,65 @@ body{
 	flex-grow: 1;
     float: left;
     margin-left: 5px;
-    border-radius: 4px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
     border: 0px;
     text-align: center;
     font-weight: bold;
     color: grey;
-	font-size: 17px;
+	font-size: 12px;
 	letter-spacing: 5px;
 }
+
+.connection .connectButton{
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	float : left;
+	width: 0px;
+	transition: width 1s;
+	overflow: hidden;
+
+	color: white;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 28px;
+    text-align: center;
+}
+
+.connection .connectButton.visible{
+	width: 60px;
+}
+.connection .connectionInfo{
+	line-height: 28px;
+    float: left;
+    flex-grow: 1;
+    text-align: right;
+    font-size: 12px;
+}
+
+.loading{
+	position: absolute;
+    z-index: 50;
+    background-color: #80808070;
+    border-radius: 4px;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+}
+
+.loading img{
+	width: 50px;
+    position: absolute;
+    right: 50%;
+    margin-right: -25px;
+    top: 50%;
+	margin-top: -30px;
+	animation:spin 1s linear infinite;
+	
+}
+
+@keyframes spin { 100% { -webkit-transform: rotateY(360deg); transform:rotateY(360deg); } }
 
 .content{
 	background-color: rgba(255,255,255,0.5);
@@ -158,65 +213,164 @@ body{
 	border-radius: 4px;
 	padding: 5px;
 	min-height: 60px;
-}
-
-
-
-
-
-.tokenEntry{
-	padding: 20px;
-	position: relative;
-	float:left;
-	width : 600px;
-	height: 90px;
 	display: flex;
-	flex-direction: row;
+	flex-direction : row;
 }
 
-.tokenEntry:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 4px;
-  background: linear-gradient(120deg, #080086, #00e5f1, #080086);
-  background-size: 300% 300%;
-  clip-path: polygon(0% 100%, 3px 100%, 3px 3px, calc(100% - 3px) 3px, calc(100% - 3px) calc(100% - 3px), 3px calc(100% - 3px), 3px 100%, 100% 100%, 100% 0%, 0% 0%);
-}
-
-
-
-.tokenEntry:after {
-	animation-delay: 2s;
-	animation: frame-enter 1s forwards ease-in-out reverse, gradient-animation 4s ease-in-out infinite;
-}
-
-/* motion */
-
-
-
-.tokenEntry img{
-	height: 70px;   
+.content .events{
 	float: left;
-	padding-right: 10px;
+    width: 100%;
+	height: 300px;
+	border-radius : 4px;
+	border: 1px solid #8fbbf5;
+	position: relative;
 }
 
-.tokenEntry span{
+.events-header{
 	float: left;
+    display: flex;
+    flex-direction: row;
+	background-color: #8fbbf5;
+    width: 100%;
+    position: relative;
+    color: white;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.events-header .column{
+	font-weight: bold;
+	border-right: 1px solid white;
+	
+}
+.events-header .column:last-of-type{
+	border-right: 0px;
+}
+
+.column.time{
+	width: 80px;
+}
+.column.event{
+	flex-grow : 1;
+}
+.column.replay{
+	width: 50px;
+}
+
+.events-list{
+	position: absolute;
+	width: 100%;
+	height: calc(100% - 30px);
+	top: 30px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	background-color: #e2edff;
+}
+
+.events-list.odd{
+	background-color: #f5ffff;
+}
+
+.events-row{
+	float: left;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    position: relative;
+    color: #00306f;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+	font-size: 12px;
+	border-bottom: 1px solid #8fbbf5;
+}
+
+.events-row:nth-of-type(odd){
+	background-color: #e2edff;
+}
+.events-row:nth-of-type(even){
+	background-color: #f5ffff;
+}
+
+.events-row .column.event{
+	text-align: left;
+	text-indent: 5px;
+}
+
+.events-row .column{
+	border-right: 1px solid #8fbbf5;
+}
+.events-row .column.event i{
+	opacity: 0.4;
+}
+
+.events-row .column:last-of-type{
+	border-right: 0px;
+}
+
+.replayBtn{
+	width: 22px;
+    height: 22px;
+    margin-top: 4px;
+    margin-left: 13px;
+	border-radius: 2px;
+	color: white;
+	line-height: 22px;
+	text-align: center;
+}
+
+.selectPrinterPopUp{
+	width: 400px;
+    height: 250px;
     position: absolute;
-    background-color: #e5f5ff;
-    top: -7px;
-    z-index: 1;
-    padding-left: 10px;
-    padding-right: 10px;
+    z-index: 100;
+    border-radius: 4px;
+    right: 50%;
+    margin-right: -200px;
+	background-color: #e5f5ff;
+	border: 1px solid #8fbbf5;
+}
+
+.selectPrinterPopUp-header{
+	float: left;
+	background-color: #8fbbf5;
+    width: 100%;
+    position: relative;
+    color: white;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.selectPrinterPopUp .dialogue{
+	text-align: center;
+    padding-top: 70px;
     font-size: 18px;
 }
-.tokenEntry input{
-	flex-grow: 1;
+.selectPrinterPopUp select{
 	float: left;
-	text-align: center;
-	font-size: 34px;
+    width: 100%;
+    height: 34px;
+    width: 340px;
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
+.confirmPrinterBtn{
+	float: left;
+    margin-top: 20px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    width: 200px;
+    margin-left: 100px;
+    text-align: center;
 }

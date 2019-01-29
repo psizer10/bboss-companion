@@ -17,19 +17,22 @@ let settingsWindow;
 
 const createWindow = () => {
 
-	loadJS();
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
 		name : 'BBOSS Companion',
-		width: 800,
-		height: 600,
-		//frame : false
+		width: 600,
+		height: 440,
+		webPreferences: {
+			plugins: true
+		  }
+	//	frame : false
 	});
 
 
 
 	// and load the index.html of the app.
-	mainWindow.loadURL(`file://${__dirname}/index.html`);
+//	mainWindow.loadURL(`file://${__dirname}/index.html`);
+	mainWindow.loadURL(`http://bboss.paul/companion/request/bbaebe67ae5952a57d4adff7/6079a0fdc8f24e6718bd7925`);
 
 	// Open the DevTools.
 	mainWindow.webContents.openDevTools();
@@ -76,10 +79,10 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-function loadJS () {
-  const files = glob.sync(path.join(__dirname, 'assets/js/*.js'))
-  files.forEach((file) => { require(file) })
-}
+// function loadJS () {
+//   const files = glob.sync(path.join(__dirname, 'assets/js/*.js'))
+//   files.forEach((file) => { require(file) })
+// }
 function openSettingsWindow(){
 	settingsWindow = new BrowserWindow({
 		name : 'BBOSS Companion Settings',

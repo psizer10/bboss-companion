@@ -2,7 +2,7 @@
   "name": "bboss_companion",
   "productName": "bboss_companion",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "BBOSS Companion App",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -47,23 +47,25 @@
     }
   },
   "dependencies": {
-    "electron-compile": "^6.4.3",
-    "electron-squirrel-startup": "^1.0.0",
     "cryptiles": ">=4.1.2",
-    "mime": ">=1.4.1",
-    "hoek": ">=4.2.1",
-    "socket.io-client": "^2.0.4"
+    "electron": "^4.0.2",
+    "electron-compile": "^6.4.4",
+    "electron-pdf-window": "^1.0.12",
+    "electron-squirrel-startup": "^1.0.0",
+    "hoek": "^6.1.2",
+    "mime": "^2.4.0",
+    "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "electron-forge": "^5.2.2",
+    "electron-forge": "^5.2.4",
     "electron-prebuilt-compile": "3.0.6",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.1.0",
-    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.11.1"
+    "eslint-plugin-react": "^7.12.4"
   }
 }
