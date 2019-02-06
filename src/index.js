@@ -13,26 +13,25 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
-let settingsWindow;
 
 const createWindow = () => {
 
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
 		name : 'BBOSS Companion',
+		// width: 600,
+		// height: 440,
 		width: 600,
-		height: 440,
+		height: 1000,
 		webPreferences: {
-			plugins: true
+			plugins: false,
+			security : false
 		  }
 	//	frame : false
 	});
 
-
-
 	// and load the index.html of the app.
-//	mainWindow.loadURL(`file://${__dirname}/index.html`);
-	mainWindow.loadURL(`http://bboss.paul/companion/request/bbaebe67ae5952a57d4adff7/6079a0fdc8f24e6718bd7925`);
+	mainWindow.loadURL(`file://${__dirname}/index.html`);
 
 	// Open the DevTools.
 	mainWindow.webContents.openDevTools();

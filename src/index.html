@@ -44,7 +44,7 @@
 					<div class='events-header'>
 						<div class='column time'>Time</div>
 						<div class='column event'>Event</div>
-						<div class='column replay'>Replay</div>
+						<!-- <div class='column replay'>Replay</div> -->
 					</div>
 					<div class='events-list' ng-class='{odd : companion.events.length % 2}'>
 						<div class='events-row' ng-repeat='(key, event) in companion.events'>
@@ -53,9 +53,9 @@
 								<i class='fas ' ng-class='companion.eventIcon(event)'></i>&nbsp;&nbsp;
 								{{event.description}}
 							</div>
-							<div class='column replay'>
+							<!-- <div class='column replay'>
 								<div class='replayBtn bBtn bGreen' ng-if='!event.disableReplay'><i class='fa fa-redo-alt'></i></div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 				</div>

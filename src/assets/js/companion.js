@@ -3,6 +3,9 @@
 import * as io from 'socket.io-client';
 
 const {BrowserWindow, Menu, app, shell, dialog, session} = require('electron').remote;
+const qs = require ("query-string");
+const path = require(`path`);
+
 const bbossURL = 'http://bboss.paul';
 const fileSystem = require('fs');
 
@@ -65,8 +68,12 @@ controller('CompanionController', ['$scope', '$http',
 
 		function eventQueue(evt){
 			console.log(evt);
+		
 			print(evt);
 		};
+
+
+		
 		/*--------------------------------------------------*/
 
 		/*-------------------- PRINTING --------------------*/
@@ -75,34 +82,40 @@ controller('CompanionController', ['$scope', '$http',
 			// Create window
 			getPrinter(event.type,
 				function(printer){
-					console.log(bbossURL + '/companion/request/' + event.requestToken  + '/' + bb.connection.token);
-				
-					printWindow = new BrowserWindow({show: false, webPreferences: {
-						plugins: true
-					  }});
-					// Could be redundant, try if you need this.
-					//printWindow.once('ready-to-show', () => printWindow.hide())
-					// load PDF.
-					printWindow.loadURL(bbossURL + '/companion/request/' + event.requestToken  + '/' + bb.connection.token,
-						{
-							extraHeaders : 'Content-Type: application/pdf'
-						}
-					);
-				//	printWindow.loadURL('https://www.google.co.uk');
-					return;
-					// if pdf is loaded start printing.
-					printWindow.webContents.on('did-finish-load', () => {
-						printWindow.webContents.print({silent: true, deviceName : printer});
+					(function p(page){
+						console.log(bbossURL + '/companion/request/' + event.requestToken  + '/' + bb.connection.token + '/' + page);
+						printWindow = new BrowserWindow({
+							width: 600,
+							height: 1000,
+							webPreferences: {
+								nodeIntegration: false, 
+								webSecurity: false
+							},
+							show : false
+						});
+	
+			
+						// load PDF.
+						printWindow.loadURL(bbossURL + '/companion/request/' + event.requestToken  + '/' + bb.connection.token + '/' + page);
+
+						//Print the PDF once it has loaded
+						printWindow.webContents.on('did-finish-load', () => {
+							printWindow.webContents.print({silent: true, deviceName : printer});
 						
-						// close window after print order.
-						printWindow = null;
-					});
+							//close window after print order.
+							printWindow = null;
+
+							//if there are more pages, call self with next
+							if(page < event.pages){
+								p(page + 1);
+							}
+						});
+					})(1);
 				}
 			);
 			return;
-
-			
 		};
+		
 
 		function getPrinter(type, callback){
 			loadPrintSettings(false,
@@ -151,6 +164,7 @@ controller('CompanionController', ['$scope', '$http',
 			if(bb.printers == null || refresh){
 				bb.printers = new BrowserWindow({show:false}).webContents.getPrinters();
 			}
+			console.log(bb.printers);
 			return bb.printers;
 		};
 
@@ -168,7 +182,6 @@ controller('CompanionController', ['$scope', '$http',
 							else{
 								bb.printSettings = JSON.parse(data);
 								if(callback) callback();
-								return;
 							}
 						}
 					);
@@ -178,7 +191,9 @@ controller('CompanionController', ['$scope', '$http',
 					bb.printSettings = {};
 					if(callback) callback();
 				}
+				return;
 			}
+			if(callback) callback();
 		};
 
 		function writeToPrintSettings(type, printer){
@@ -192,14 +207,6 @@ controller('CompanionController', ['$scope', '$http',
 		}
 		/*--------------------------------------------------*/
 
-		setTimeout(
-			function(){
-				bb.connection ={
-					token : '6079a0fdc8f24e6718bd7925'
-				} ;
-				listen();
-			}, 2000
-		);
 		// (function initialise(){
 		// 	listPrinters();
 		// })();
