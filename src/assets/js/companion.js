@@ -2,7 +2,7 @@
 
 import * as io from 'socket.io-client';
 
-const {BrowserWindow, Menu, app, shell, dialog, session} = require('electron').remote;
+const {BrowserWindow, Notification, Menu, app, shell, dialog, session} = require('electron').remote;
 const qs = require ("query-string");
 const path = require(`path`);
 
@@ -13,8 +13,8 @@ const PDFWindow = require('electron-pdf-window');
 
 angular.module('companionApp', []).
 
-controller('CompanionController', ['$scope', '$http',
-	function($scope, $http){
+controller('CompanionController', ['$scope', '$http', '$interval',
+	function($scope, $http, $interval){
 
 		var bb = this;
 	
@@ -26,7 +26,7 @@ controller('CompanionController', ['$scope', '$http',
 		this.connect = function(){
 			bb.loading = true;
 			//$http.get(bbossURL + '/companion/checkConnection/' + self.token)
-			$http.get(bbossURL + '/companion/checkConnection/' + bb.token)
+			$http.get(bbossURL + '/companion/initialConnection/' + bb.token)
 			.then(
 				function(response){ //success
 					bb.events.push(response.data.event);
@@ -34,6 +34,7 @@ controller('CompanionController', ['$scope', '$http',
 					listen();
 					bb.loading = false;
 					new Audio('../src/assets/sounds/connected.mp3').play();
+					ping();
 				},
 				function(response){ //error
 
@@ -52,6 +53,36 @@ controller('CompanionController', ['$scope', '$http',
 				}
 			);
 		};
+
+		function checkConnection(){
+			console.log('check');
+			$http.get(bbossURL + '/companion/checkConnection/' + bb.token)
+			.then(
+				function(response){ //success
+					console.log(response);
+				},
+				function(response){ //error
+					console.log(response);
+				}
+			)
+		};
+
+		function connectionLost(){
+
+		};
+
+		/*--- Periodically check the connection ---*/
+		var pingInterval;
+		function ping(){
+			console.log('ping');
+			$interval.cancel(pingInterval);
+			pingInterval = $interval(
+				function(){
+					checkConnection();
+				}, (1 * 60000) //1 minutes
+			)
+		};
+		/*-----------------------------------------*/
 		/*--------------------------------------------------*/
 
 		/*--------------------- EVENTS ---------------------*/
@@ -68,12 +99,19 @@ controller('CompanionController', ['$scope', '$http',
 
 		function eventQueue(evt){
 			console.log(evt);
-		
+			let not = new Notification(
+				{
+					title : 'BBOSS Companion',
+					body : 'Printing: ' + evt.description,
+					icon : '/assets/images/bbossLogo.png'
+				}
+			);
+			not.show();
+			ping();
+			return;
 			print(evt);
+			
 		};
-
-
-		
 		/*--------------------------------------------------*/
 
 		/*-------------------- PRINTING --------------------*/

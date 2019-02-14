@@ -26,7 +26,8 @@ const createWindow = () => {
 		webPreferences: {
 			plugins: false,
 			security : false
-		  }
+		},
+		icon : path.join(__dirname, 'src/assets/images/bbossLogo.png')
 	//	frame : false
 	});
 
