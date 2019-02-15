@@ -3,13 +3,8 @@
 import * as io from 'socket.io-client';
 
 const {BrowserWindow, Notification, Menu, app, shell, dialog, session} = require('electron').remote;
-const qs = require ("query-string");
-const path = require(`path`);
-
 const bbossURL = 'http://bboss.paul';
 const fileSystem = require('fs');
-
-const PDFWindow = require('electron-pdf-window');
 
 angular.module('companionApp', []).
 
@@ -37,7 +32,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 					ping();
 				},
 				function(response){ //error
-
+					noConnection('failed');
 				}
 			);
 
@@ -47,15 +42,20 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 			let socket = new io.connect(bbossURL + ':3000')
 			socket.on('bboss:companion-' + bb.connection.token,
 				function(event){
-					bb.events.unshift(event);
-					$scope.$apply();
-					eventQueue(event);
+					console.log(event);
+					if(event.type == 'connectionDestroyed'){
+						noConnection('lost');
+					}
+					else{
+						bb.events.unshift(event);
+						$scope.$apply();
+						addToEventQueue(event);
+					}
 				}
 			);
 		};
 
 		function checkConnection(){
-			console.log('check');
 			$http.get(bbossURL + '/companion/checkConnection/' + bb.token)
 			.then(
 				function(response){ //success
@@ -63,22 +63,43 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 				},
 				function(response){ //error
 					console.log(response);
+					noConnection('lost');
 				}
 			)
 		};
 
-		function connectionLost(){
+		function noConnection(type){
+			bb.connectionError = (type == 'lost' ? 'Your connection to BBOSS has been lost.' : 'Could not connect to BBOSS.');
+			bb.mask = true;
+			bb.popUp = '../src/assets/html/noConnection.html';
+			$scope.$apply();
+			let not = new Notification(
+				{
+					title : 'Connection Error',
+					body : bb.connectionError
+				}
+			);
+			not.show();
+		};
 
+		// setTimeout(
+		// 	function(){
+		// 		noConnection('lost');
+		// 	}, 2000
+		// )
+
+		this.reloadApp = function(){
+			app.relaunch();
+			app.exit(0);
 		};
 
 		/*--- Periodically check the connection ---*/
 		var pingInterval;
 		function ping(){
-			console.log('ping');
 			$interval.cancel(pingInterval);
 			pingInterval = $interval(
 				function(){
-					checkConnection();
+				//	checkConnection();
 				}, (1 * 60000) //1 minutes
 			)
 		};
@@ -87,6 +108,34 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 
 		/*--------------------- EVENTS ---------------------*/
 		this.events = [];
+		this.queue = [];
+		var queueIgnore = ['connected', 'connectionDestroyed'];
+		function addToEventQueue(evt){
+			if(queueIgnore.indexOf(evt.type) == -1){
+				console.log(evt.type)
+				bb.queue[bb.queue.length] = evt;
+				if(bb.queue.length == 1){ //the queue doesnt have anything in when a new one is added, then it wont be worked already
+					workEventQueue();
+				}
+				console.log(bb.queue);
+			}
+		};
+
+		function workEventQueue(){
+
+			if(bb.queue.length > 0){
+				//only printing atm
+				ping();
+				print(angular.copy(bb.queue[0]),
+					function(){
+						bb.queue.shift(); //removes the event that has just been worked
+						workEventQueue();
+					}
+				);
+		
+			}
+			console.log(bb.queue);
+		}
 
 		this.eventIcon = function(event){
 			if(event.type == 'connected'){
@@ -96,31 +145,22 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 				return 'fa-print';
 			}
 		};
-
-		function eventQueue(evt){
-			console.log(evt);
-			let not = new Notification(
-				{
-					title : 'BBOSS Companion',
-					body : 'Printing: ' + evt.description,
-					icon : '/assets/images/bbossLogo.png'
-				}
-			);
-			not.show();
-			ping();
-			return;
-			print(evt);
-			
-		};
 		/*--------------------------------------------------*/
 
 		/*-------------------- PRINTING --------------------*/
 		let printWindow = null;
-		function print(event){
-			// Create window
+		function print(event, callback){
 			getPrinter(event.type,
 				function(printer){
+					let not = new Notification(
+						{
+							title : 'BBOSS Companion',
+							body : 'Printing: ' + event.description
+						}
+					);
+					not.show();
 					(function p(page){
+						
 						console.log(bbossURL + '/companion/request/' + event.requestToken  + '/' + bb.connection.token + '/' + page);
 						printWindow = new BrowserWindow({
 							width: 600,
@@ -132,7 +172,6 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 							show : false
 						});
 	
-			
 						// load PDF.
 						printWindow.loadURL(bbossURL + '/companion/request/' + event.requestToken  + '/' + bb.connection.token + '/' + page);
 
@@ -146,6 +185,9 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 							//if there are more pages, call self with next
 							if(page < event.pages){
 								p(page + 1);
+							}
+							else{
+								callback();
 							}
 						});
 					})(1);
@@ -194,6 +236,13 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 				}
 			};
 			$scope.$apply();
+
+			let not = new Notification(
+				{
+					title : 'Action Required',
+					body : 'You need to select a printer for ' + '...'
+				}
+			);
 		};
 		/*------------------------*/
 
@@ -202,7 +251,6 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 			if(bb.printers == null || refresh){
 				bb.printers = new BrowserWindow({show:false}).webContents.getPrinters();
 			}
-			console.log(bb.printers);
 			return bb.printers;
 		};
 

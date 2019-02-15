@@ -374,3 +374,57 @@ body{
     margin-left: 100px;
     text-align: center;
 }
+
+
+
+.noConnectionPopUp{
+	width: 400px;
+    height: 250px;
+    position: absolute;
+    z-index: 100;
+    border-radius: 4px;
+    right: 50%;
+    margin-right: -200px;
+	background-color: #fff6f6;
+	border: 1px solid #f58f8f;
+}
+
+.noConnectionPopUp-header{
+	float: left;
+	background-color: #f58f8f;
+    width: 100%;
+    position: relative;
+    color: white;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.noConnectionPopUp .dialogue{
+	text-align: center;
+    padding-top: 70px;
+    font-size: 18px;
+}
+.noConnectionPopUp select{
+	float: left;
+    width: 100%;
+    height: 34px;
+    width: 340px;
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
+.confirmNoConnectionBtn{
+	float: left;
+    margin-top: 20px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    width: 200px;
+    margin-left: 100px;
+    text-align: center;
+}

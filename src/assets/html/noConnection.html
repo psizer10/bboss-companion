@@ -1,0 +1,13 @@
+<div class='noConnectionPopUp'>
+    <div class='noConnectionPopUp-header'>No Connection&nbsp;&nbsp;<i class='fas fa-unlink'></i></div>
+    <div class='dialogue'>
+        {{companion.connectionError}}
+        <br>
+        <br>
+        Please reload the Companion App, generate a new token, and reconnect.
+    </div>
+    <!-- <select ng-model='companion.selectPrinter'>
+        <option ng-repeat='(key, printer) in companion.printers' value='{{printer.name}}'>{{printer.description}}</option>
+    </select> -->
+    <div class='bBtn bGreen confirmNoConnectionBtn' ng-click='companion.reloadApp()'>Okay, Reload Now</div>
+</div>

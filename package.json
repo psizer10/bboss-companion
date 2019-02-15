@@ -29,10 +29,11 @@
         ]
       },
       "electronPackagerConfig": {
-        "packageManager": "npm"
+        "packageManager": "npm",
+        "icon": "src/images/icon/icon.png.icns"
       },
       "electronWinstallerConfig": {
-        "name": "bboss_companion"
+        "name": "BBOSS Companion"
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
@@ -42,7 +43,7 @@
       },
       "windowsStoreConfig": {
         "packageName": "",
-        "name": "bboss_companion"
+        "name": "BBOSS Companion"
       }
     }
   },
