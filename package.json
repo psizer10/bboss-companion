@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/psizer10/bb-companion.git"
+    "url": "git://github.com/psizer10/bboss-companion.git"
   },
   "scripts": {
     "start": "electron-forge start",
@@ -43,7 +43,7 @@
       "electronInstallerRedhat": {},
       "github_repository": {
         "owner": "psizer10",
-        "name": "bb-companion"
+        "name": "bboss-companion"
       },
       "windowsStoreConfig": {
         "packageName": "BBOSS Companion",
