@@ -428,3 +428,18 @@ body{
     margin-left: 100px;
     text-align: center;
 }
+
+.footer{
+	font-size: 10px;
+	padding: 2px;
+	text-align: right;
+	float: left;
+	width: 100%;
+}
+span{
+	
+}
+span:hover{
+	cursor:pointer;
+	text-decoration: underline;
+}

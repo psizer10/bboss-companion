@@ -1,6 +1,6 @@
 'use strict';
 
-import * as io from 'socket.io-client';
+const io = require('socket.io-client');
 
 const {BrowserWindow, Notification, Menu, app, shell, dialog, session} = require('electron').remote;
 const bbossURL = 'http://bboss.paul';
@@ -12,6 +12,8 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 	function($scope, $http, $interval){
 
 		var bb = this;
+
+		this.version = app.getVersion().toString();
 	
 		/*------------------- CONNECTION -------------------*/
 		this.connection = undefined;
@@ -99,7 +101,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 			$interval.cancel(pingInterval);
 			pingInterval = $interval(
 				function(){
-				//	checkConnection();
+					checkConnection();
 				}, (1 * 60000) //1 minutes
 			)
 		};
@@ -112,12 +114,10 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 		var queueIgnore = ['connected', 'connectionDestroyed'];
 		function addToEventQueue(evt){
 			if(queueIgnore.indexOf(evt.type) == -1){
-				console.log(evt.type)
 				bb.queue[bb.queue.length] = evt;
 				if(bb.queue.length == 1){ //the queue doesnt have anything in when a new one is added, then it wont be worked already
 					workEventQueue();
 				}
-				console.log(bb.queue);
 			}
 		};
 
@@ -125,7 +125,8 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 
 			if(bb.queue.length > 0){
 				//only printing atm
-				ping();
+				ping(); //reset the connection checker
+				bb.currentEvent = angular.copy(bb.queue[0]);
 				print(angular.copy(bb.queue[0]),
 					function(){
 						bb.queue.shift(); //removes the event that has just been worked
@@ -134,7 +135,6 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 				);
 		
 			}
-			console.log(bb.queue);
 		}
 
 		this.eventIcon = function(event){
@@ -251,6 +251,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 			if(bb.printers == null || refresh){
 				bb.printers = new BrowserWindow({show:false}).webContents.getPrinters();
 			}
+			console.log(bb.printers);
 			return bb.printers;
 		};
 

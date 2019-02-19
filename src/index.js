@@ -1,4 +1,5 @@
-import { app, BrowserWindow } from 'electron';
+
+const {BrowserWindow, app, Menu} = require('electron');
 const path = require('path')
 const glob = require('glob')
 
@@ -19,10 +20,10 @@ const createWindow = () => {
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
 		name : 'BBOSS Companion',
+		 width: 600,
+		 height: 470,
 		// width: 600,
-		// height: 440,
-		width: 600,
-		height: 1000,
+		// height: 1000,
 		webPreferences: {
 			plugins: false,
 			security : false
@@ -31,11 +32,39 @@ const createWindow = () => {
 	//	frame : false
 	});
 
+	Menu.setApplicationMenu(
+		Menu.buildFromTemplate(
+			[
+				{
+					label : 'BBOSS Companion',
+					submenu : [
+						{
+							label : 'Refresh',
+							accelerator : 'CmdOrCtrl+R'
+						},
+						{ label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
+					]
+				},
+				{
+					label: "Edit",
+					submenu: [
+						{ label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+						{ label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+						{ type: "separator" },
+						{ label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+						{ label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+						{ label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+						{ label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+					]
+				}
+			]
+		)
+	)
+
+
 	// and load the index.html of the app.
 	mainWindow.loadURL(`file://${__dirname}/index.html`);
 
-	// Open the DevTools.
-	mainWindow.webContents.openDevTools();
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', () => {
@@ -44,20 +73,20 @@ const createWindow = () => {
 		// when you should delete the corresponding element.
 		mainWindow = null;
 	});
-
-
-	// let contents = mainWindow.webContents
-	//contents.print({silent: true, printBackground: false, deviceName: 'EPSON_Stylus_Photo_1400'})
-	//myConsole.log(contents.getPrinters());
-//	sock();
-//	openSettingsWindow();
 };
 
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', function() {
+	createWindow()
+	autoUpdater.checkForUpdates();
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+    win.webContents.send('updateReady')
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -79,10 +108,6 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-// function loadJS () {
-//   const files = glob.sync(path.join(__dirname, 'assets/js/*.js'))
-//   files.forEach((file) => { require(file) })
-// }
 function openSettingsWindow(){
 	settingsWindow = new BrowserWindow({
 		name : 'BBOSS Companion Settings',
@@ -93,6 +118,7 @@ function openSettingsWindow(){
 
 	//settingsWindow.loadURL(`https://www.bboss.biz`);
 }
+
 
 
 
