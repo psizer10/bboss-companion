@@ -6,6 +6,12 @@ const glob = require('glob')
 var nodeConsole = require('console');
 var myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
+require('update-electron-app')(
+	{
+		interval : '5 minutes'
+	}
+)
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
 	app.quit();
@@ -81,12 +87,9 @@ const createWindow = () => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', function() {
 	createWindow()
-	autoUpdater.checkForUpdates();
 });
 
-autoUpdater.on('update-downloaded', (info) => {
-    win.webContents.send('updateReady')
-});
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -104,21 +107,6 @@ app.on('activate', () => {
 		createWindow();
 	}
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
-
-function openSettingsWindow(){
-	settingsWindow = new BrowserWindow({
-		name : 'BBOSS Companion Settings',
-		width: 200,
-		height: 200,
-		//frame : false
-	});
-
-	//settingsWindow.loadURL(`https://www.bboss.biz`);
-}
-
 
 
 

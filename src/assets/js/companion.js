@@ -293,6 +293,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 			);
 		}
 		/*--------------------------------------------------*/
+		
 
 		// (function initialise(){
 		// 	listPrinters();
