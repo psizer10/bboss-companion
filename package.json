@@ -1,7 +1,7 @@
 {
   "name": "bboss_companion",
   "productName": "BBOSS-Companion-App",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "BBOSS Companion App",
   "main": "src/index.js",
   "repository": {
@@ -38,7 +38,7 @@
       },
       "electronWinstallerConfig": {
         "name": "BBOSS-Companion",
-        "setupIcon": "src/assets/images/icons/bboss.ico",
+        "setupIcon": "src/assets/images/bbossLogo.ico",
         "certificateFile" : "src/cert.pfx"
       },
       "electronInstallerDebian": {},
