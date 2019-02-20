@@ -27,7 +27,7 @@ const createWindow = () => {
 	mainWindow = new BrowserWindow({
 		name : 'BBOSS Companion',
 		 width: 600,
-		 height: 470,
+		 height: 500,
 		// width: 600,
 		// height: 1000,
 		webPreferences: {
@@ -37,6 +37,9 @@ const createWindow = () => {
 		icon : path.join(__dirname, 'src/assets/images/bbossLogo.png')
 	//	frame : false
 	});
+	app.showExitPrompt = true;
+
+	mainWindow.webContents.openDevTools();
 
 	Menu.setApplicationMenu(
 		Menu.buildFromTemplate(

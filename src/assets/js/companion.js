@@ -2,8 +2,10 @@
 
 const io = require('socket.io-client');
 
-const {BrowserWindow, Notification, Menu, app, shell, dialog, session} = require('electron').remote;
-const bbossURL = 'http://bboss.paul';
+const {BrowserWindow, Notification, app, dialog} = require('electron').remote;
+
+//const bbossURL = 'http://bboss.paul';
+const bbossURL = 'https://dev.bboss.biz';
 const fileSystem = require('fs');
 
 angular.module('companionApp', []).
@@ -64,7 +66,6 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 					console.log(response);
 				},
 				function(response){ //error
-					console.log(response);
 					noConnection('lost');
 				}
 			)
@@ -293,11 +294,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 			);
 		}
 		/*--------------------------------------------------*/
-		
 
-		// (function initialise(){
-		// 	listPrinters();
-		// })();
 		
 	}
 ]);
