@@ -38,7 +38,7 @@
       },
       "electronWinstallerConfig": {
         "name": "BBOSS-Companion",
-        "setupIcon": "src/assets/images/bbossLogo.ico",
+        "setupIcon": "src/assets/images/icons/bboss.ico",
         "certificateFile" : "src/cert.pfx"
       },
       "electronInstallerDebian": {},
