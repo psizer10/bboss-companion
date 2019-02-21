@@ -190,6 +190,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 										p(page + 1);
 									}
 									else{
+										
 										callback();
 									}
 								}
