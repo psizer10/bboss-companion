@@ -150,7 +150,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 		/*--------------------------------------------------*/
 
 		/*-------------------- PRINTING --------------------*/
-		let printWindow = null;
+	//	let printWindow = [];
 		function print(event, callback){
 			getPrinter(event.type,
 				function(printer){
@@ -164,7 +164,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 					(function p(page){
 						
 						console.log(bbossURL + '/companion/request/' + event.requestToken  + '/' + bb.connection.token + '/' + page);
-						printWindow = new BrowserWindow({
+						let printWindow = new BrowserWindow({
 							width: 600,
 							height: 1000,
 							webPreferences: {
