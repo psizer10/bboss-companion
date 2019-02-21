@@ -150,7 +150,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 		/*--------------------------------------------------*/
 
 		/*-------------------- PRINTING --------------------*/
-	//	let printWindow = [];
+		let printWindow = {};
 		function print(event, callback){
 			getPrinter(event.type,
 				function(printer){
@@ -164,7 +164,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 					(function p(page){
 						
 						console.log(bbossURL + '/companion/request/' + event.requestToken  + '/' + bb.connection.token + '/' + page);
-						let printWindow = new BrowserWindow({
+						printWindow[event.requestToken] = new BrowserWindow({
 							width: 600,
 							height: 1000,
 							webPreferences: {
@@ -176,14 +176,14 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 						});
 	
 						// load PDF.
-						printWindow.loadURL(bbossURL + '/companion/request/' + event.requestToken  + '/' + bb.connection.token + '/' + page);
+						printWindow[event.requestToken].loadURL(bbossURL + '/companion/request/' + event.requestToken  + '/' + bb.connection.token + '/' + page);
 
 						//Print the PDF once it has loaded
-						printWindow.webContents.on('did-finish-load', () => {
-							printWindow.webContents.print({silent: true, deviceName : printer},
+						printWindow[event.requestToken].webContents.on('did-finish-load', () => {
+							printWindow[event.requestToken].webContents.print({silent: true, deviceName : printer},
 								function(){
 									//close window after print order.
-									printWindow = null;
+									printWindow[event.requestToken] = null;
 
 									//if there are more pages, call self with next
 									if(page < event.pages){
