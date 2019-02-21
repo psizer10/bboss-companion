@@ -37,9 +37,7 @@ const createWindow = () => {
 		icon : path.join(__dirname, 'src/assets/images/bbossLogo.png')
 	//	frame : false
 	});
-	app.showExitPrompt = true;
 
-	mainWindow.webContents.openDevTools();
 
 	Menu.setApplicationMenu(
 		Menu.buildFromTemplate(

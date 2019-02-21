@@ -1,7 +1,7 @@
 {
   "name": "bboss_companion",
   "productName": "BBOSS-Companion-App",
-  "version": "1.0.3-dev",
+  "version": "1.0.4-dev",
   "description": "BBOSS Companion App",
   "main": "src/index.js",
   "repository": {

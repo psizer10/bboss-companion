@@ -128,6 +128,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 				//only printing atm
 				ping(); //reset the connection checker
 				bb.currentEvent = angular.copy(bb.queue[0]);
+				console.log(bb.currentEvent);
 				print(angular.copy(bb.queue[0]),
 					function(){
 						bb.queue.shift(); //removes the event that has just been worked
@@ -171,6 +172,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 								webSecurity: false
 							},
 							show : false
+							
 						});
 	
 						// load PDF.
@@ -178,18 +180,20 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 
 						//Print the PDF once it has loaded
 						printWindow.webContents.on('did-finish-load', () => {
-							printWindow.webContents.print({silent: true, deviceName : printer});
-						
-							//close window after print order.
-							printWindow = null;
+							printWindow.webContents.print({silent: true, deviceName : printer},
+								function(){
+									//close window after print order.
+									printWindow = null;
 
-							//if there are more pages, call self with next
-							if(page < event.pages){
-								p(page + 1);
-							}
-							else{
-								callback();
-							}
+									//if there are more pages, call self with next
+									if(page < event.pages){
+										p(page + 1);
+									}
+									else{
+										callback();
+									}
+								}
+							);
 						});
 					})(1);
 				}
