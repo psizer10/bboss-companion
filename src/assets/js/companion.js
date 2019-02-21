@@ -183,7 +183,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 							printWindow[event.requestToken].webContents.print({silent: true, deviceName : printer},
 								function(){
 									//close window after print order.
-									printWindow[event.requestToken] = null;
+								//	printWindow[event.requestToken] = null;
 
 									//if there are more pages, call self with next
 									if(page < event.pages){
