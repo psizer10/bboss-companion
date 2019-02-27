@@ -39,7 +39,7 @@
       "electronWinstallerConfig": {
         "name": "BBOSS-Companion",
         "setupIcon": "src/assets/images/icons/bboss.ico",
-        "certificateFile" : "src/cert.pfx"
+        "certificateFile": "src/cert.pfx"
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
@@ -69,7 +69,7 @@
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "electron": "<4",
+    "electron": "<3",
     "electron-builder": "^20.38.5",
     "electron-forge": "^5.2.4",
     "electron-prebuilt-compile": "3.0.6",
