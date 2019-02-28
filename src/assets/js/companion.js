@@ -75,7 +75,7 @@ controller('CompanionController', ['$scope', '$http', '$interval',
 			bb.connectionError = (type == 'lost' ? 'Your connection to BBOSS has been lost.' : 'Could not connect to BBOSS.');
 			bb.mask = true;
 			bb.popUp = '../src/assets/html/noConnection.html';
-			$scope.$apply();
+		//	$scope.$apply();
 			let not = new Notification(
 				{
 					title : 'Connection Error',
